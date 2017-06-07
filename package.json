@@ -1,14 +1,14 @@
 {
   "name": "excellentexport",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Client side JavaScript export to Excel or CSV",
   "license": "MIT",
   "homepage": "http://jordiburgos.com/post/2014/excellentexport-javascript-export-to-excel-csv.html",
-  "author": "Jordi Burgos <jordiburgos@gmail.com>",
-  "bugs": "https://github.com/jmaister/excellentexport/issues",
+  "author": "Jordi Burgos <jordiburgos@gmail.com>, FORK: Ricardo Burone",
+  "bugs": "https://github.com/rburone/excellentexport/issues",
   "repository": {
       "type": "git",
-      "url": "git://github.com/jmaister/excellentexport.git"
+      "url": "git://github.com/rburone/excellentexport.git"
   },
   "keywords": [
     "excel",
