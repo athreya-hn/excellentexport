@@ -1,10 +1,14 @@
 /**
- * ExcellentExport 2.0.3
+ * ExcellentExport 2.1.0
  * A client side Javascript export to Excel.
  *
  * @author: Jordi Burgos (jordiburgos@gmail.com)
  * @url: https://github.com/jmaister/excellentexport
  *
+ *	FORK by Ricardo Burone (https://github.com/rburone/excellentexport)
+ *		ADD: Modif. from rneuber1 (https://github.com/rneuber1/excellentexport)
+ *		ADD: File generation for download from javascript
+ *			ExcellentExport.excelFile()
  */
 /*jslint browser: true, bitwise: true, vars: true, white: true */
 /*global define, exports, module */
@@ -44,9 +48,11 @@ var ExcellentExport = (function() {
         return blob;
     }
 
-    var version = "2.0.3";
+    var version = "2.1.0";
     var uri = {excel: 'data:application/vnd.ms-excel;base64,', csv: 'data:application/csv;base64,'};
-    var template = {excel: '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=ProgId content=Excel.Sheet> <meta name=Generator content="Microsoft Excel 11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>.txt {mso-number-format:"@";} .num {mso-number-format:"0\.000";} .nodec {mso-number-format:"0";} .shortdate {mso-number-format:"Short Date";} .meddate {mso-number-format:"Medium Date";} .longdate {mso-number-format:"Long Date";} .gerdate {mso-number-format:"dd.mm.yyyy";} .shorttime {mso-number-format:"Short Time";} .medtime {mso-number-format:"Medium Time";} .longtime {mso-number-format:"Long Time";} .percent2 {mso-number-format:"Percent";}.percent0 {mso-number-format:"0%";}</style></head><body><table>{table}</table></body></html>'};
+    //var template = {excel: '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=ProgId content=Excel.Sheet> <meta name=Generator content="Microsoft Excel 11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'};
+	var template = {excel: '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta name=ProgId content=Excel.Sheet> <meta name=Generator content="Microsoft Excel 11"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><style>.txt {mso-number-format:"@";} .num {mso-number-format:"0\.000";} .nodec {mso-number-format:"0";} .shortdate {mso-number-format:"Short Date";} .meddate {mso-number-format:"Medium Date";} .longdate {mso-number-format:"Long Date";} .gerdate {mso-number-format:"dd.mm.yyyy";} .shorttime {mso-number-format:"Short Time";} .medtime {mso-number-format:"Medium Time";} .longtime {mso-number-format:"Long Time";} .percent2 {mso-number-format:"Percent";}.percent0 {mso-number-format:"0%";}</style></head><body><table>{table}</table></body></html>'};
+    var csvDelimiter = ",";
     var csvDelimiter = ",";
     var csvNewLine = "\r\n";
     var base64 = function(s) {
@@ -136,7 +142,12 @@ var ExcellentExport = (function() {
             var csvData = "\uFEFF" + tableToCSV(table);
             var b64 = base64(csvData);
             return createDownloadLink(anchor,b64,'application/csv','export.csv');
-        }
+        },
+		excelFile: function(anchor, table, name) {
+            table = get(table);
+            var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML};
+			return new Blob([format(template.excel, ctx)], {type: 'application/vnd.ms-excel'});
+		}
     };
 
     return ee;
