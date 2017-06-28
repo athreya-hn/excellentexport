@@ -65,6 +65,13 @@ var ExcellentExport = (function() {
     };
 
     var get = function(element) {
+	
+	$('#' + element + ' table').contents().unwrap();
+	$('#' + element + ' tr').filter(function () {
+                return $(this).children().length === 1;
+	}).children('td').attr('colspan', '20');
+	$('#' + element + ' th').css({ 'width': '55pt' });
+
         if (!element.nodeType) {
             return document.getElementById(element);
         }
